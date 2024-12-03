@@ -19,7 +19,7 @@ public class AuthController {
 	private RoleUserService roleUserService;
 
 	@PostMapping("/signup")
-	public ResponseEntity<String> signup(@RequestBody SignupRequest signupRequest) {
+	public ResponseEntity<String> signup(@RequestBody Request signupRequest) {
 		try {
 			// Attempt to create the user with the provided details
 			roleUserService.createUser(signupRequest.getUsername(), signupRequest.getPassword(),
@@ -30,10 +30,16 @@ public class AuthController {
 			return ResponseEntity.badRequest().body(ex.getMessage());
 		}
 	}
+	
+	@PostMapping("/login")
+	public ResponseEntity<String> loginup(@RequestBody Request loginRequest) {
+		roleUserService.validateUserCredentials(loginRequest.getUsername(), loginRequest.getPassword());
+		return ResponseEntity.ok("Login Successful");
+	}
 }
 
-// DTO class for signup request
-class SignupRequest {
+// DTO class for signup/loginrequest
+class Request {
 	private String username;
 	private String password;
 	private String role;
